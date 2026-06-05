@@ -400,6 +400,7 @@ export default class ExcalidrawView
     null;
   public excalidrawAPI: ExcalidrawImperativeAPI = null;
   public setAppState: any = null;
+  public lastAppState: any = null;
   public excalidrawWrapperRef: React.MutableRefObject<HTMLDivElement | null> | null =
     null;
   public toolsPanelRef: React.MutableRefObject<ToolsPanel | null> | null = null;
@@ -5425,8 +5426,33 @@ export default class ExcalidrawView
     st: AppState,
     files: BinaryFileData[],
   ) {
-    if (this.setAppState) {
-      this.setAppState(st);
+    const prev = this.lastAppState;
+    const hasSelectionChanged = (st.selectedElementIds ? Object.keys(st.selectedElementIds).length : 0) !== 
+                                (prev?.selectedElementIds ? Object.keys(prev.selectedElementIds).length : 0);
+
+    const changed = !prev ||
+      prev.currentItemStrokeColor !== st.currentItemStrokeColor ||
+      prev.currentItemBackgroundColor !== st.currentItemBackgroundColor ||
+      prev.activeTool?.type !== st.activeTool?.type ||
+      prev.currentItemStrokeWidth !== st.currentItemStrokeWidth ||
+      prev.currentItemStrokeStyle !== st.currentItemStrokeStyle ||
+      prev.currentItemRoughness !== st.currentItemRoughness ||
+      prev.currentItemRoundness !== st.currentItemRoundness ||
+      prev.currentItemOpacity !== st.currentItemOpacity ||
+      prev.currentItemStartArrowhead !== st.currentItemStartArrowhead ||
+      prev.currentItemEndArrowhead !== st.currentItemEndArrowhead ||
+      prev.currentItemArrowType !== st.currentItemArrowType ||
+      prev.currentItemFillStyle !== st.currentItemFillStyle ||
+      hasSelectionChanged;
+
+    this.lastAppState = st;
+
+    if (changed && this.setAppState) {
+      window.setTimeout(() => {
+        if (this.setAppState) {
+          this.setAppState(st);
+        }
+      }, 0);
     }
     if (st.activeTool?.type) {
       if (st.activeTool.type === "image") {
