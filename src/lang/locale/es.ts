@@ -562,6 +562,14 @@ export default {
     "Habilitar borrador con doble tap(toque) en modo lápiz",
   DISABLE_SINGLE_FINGER_PANNING_NAME:
     "Habilitar desplazamiento con un solo dedo en modo lápiz",
+  AGGRESSIVE_PALM_REJECTION_NAME: "Rechazo de palma agresivo",
+  AGGRESSIVE_PALM_REJECTION_DESC:
+    "Rechaza agresivamente las entradas táctiles accidentales al usar un lápiz óptico/S-Pen. Muy recomendado para tabletas. " +
+    "Desactiva temporalmente el desplazamiento con el dedo mientras se dibuja o inmediatamente después del contacto con el lápiz (dentro del tiempo de espera), " +
+    "y rechaza áreas de contacto grandes (como la palma apoyada).",
+  PALM_REJECTION_TIMEOUT_NAME: "Tiempo de espera de rechazo de palma (ms)",
+  PALM_REJECTION_TIMEOUT_DESC:
+    "La duración en milisegundos para mantener desactivada la entrada táctil después del último contacto con el lápiz.",
   SHOW_PEN_MODE_FREEDRAW_CROSSHAIR_NAME: "Mostrar mira (+) en modo lápiz",
   SHOW_PEN_MODE_FREEDRAW_CROSSHAIR_DESC:
     "Muestra una mira en modo lápiz al usar la herramienta de dibujo a mano alzada. <b><u>Activado:</u></b> MOSTRAR <b><u>Desactivado:</u></b> OCULTAR<br>" +

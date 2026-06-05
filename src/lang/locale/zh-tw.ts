@@ -500,6 +500,13 @@ export default {
   ENABLE_DOUBLE_CLICK_TEXT_EDITING_NAME: "啟用雙擊文字建立",
   DISABLE_DOUBLE_TAP_ERASER_NAME: "啟用手寫模式下的雙擊橡皮擦功能",
   DISABLE_SINGLE_FINGER_PANNING_NAME: "啟用手寫模式下的單指平移功能",
+  AGGRESSIVE_PALM_REJECTION_NAME: "激進的防誤觸 (Palm Rejection)",
+  AGGRESSIVE_PALM_REJECTION_DESC:
+    "在使用觸控筆/S-Pen時，激進地拒絕意外的手指觸摸輸入。強烈推薦在平板電腦上使用。 " +
+    "在繪製時或觸控筆接觸後（在超清視窗內）暫時禁用單指平移，並拒絕大面積接觸（如貼在螢幕上的手掌）。",
+  PALM_REJECTION_TIMEOUT_NAME: "防誤觸逾時時間 (毫秒)",
+  PALM_REJECTION_TIMEOUT_DESC:
+    "在最後一次觸控筆接觸后，保持手指觸控輸入禁用的時間（以毫秒為單位）。",
   SHOW_PEN_MODE_FREEDRAW_CROSSHAIR_NAME: "在觸控筆模式下顯示十字準星（+）",
   SHOW_PEN_MODE_FREEDRAW_CROSSHAIR_DESC:
     "在觸控筆模式下使用塗鴉功能會顯示十字準星。<b>開啟：</b>顯示。<b>關閉：</b>隱藏。<br>" +

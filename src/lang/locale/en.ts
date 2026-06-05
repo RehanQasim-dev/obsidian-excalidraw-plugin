@@ -593,6 +593,14 @@ export default {
   DISABLE_DOUBLE_TAP_ERASER_NAME: "Enable double-tap eraser in pen mode",
   DISABLE_SINGLE_FINGER_PANNING_NAME:
     "Enable single-finger panning in pen mode",
+  AGGRESSIVE_PALM_REJECTION_NAME: "Aggressive palm rejection",
+  AGGRESSIVE_PALM_REJECTION_DESC:
+    "Aggressively reject accidental touch inputs when using a stylus/S-Pen. Highly recommended for tablets. " +
+    "Temporarily disables finger-panning while drawing or immediately after stylus contact (within the timeout window), " +
+    "and rejects large contact areas (like a resting palm).",
+  PALM_REJECTION_TIMEOUT_NAME: "Palm rejection timeout (ms)",
+  PALM_REJECTION_TIMEOUT_DESC:
+    "The duration in milliseconds to keep touch input disabled after the last stylus contact.",
   SHOW_PEN_MODE_FREEDRAW_CROSSHAIR_NAME: "Show (+) crosshair in pen mode",
   SHOW_PEN_MODE_FREEDRAW_CROSSHAIR_DESC:
     "Show crosshair in pen mode when using the freedraw tool. <b><u>Toggle ON:</u></b> SHOW <b><u>Toggle OFF:</u></b> HIDE<br>" +

@@ -128,6 +128,8 @@ export interface ExcalidrawSettings {
   penModeDoubleTapEraser: boolean;
   penModeSingleFingerPanning: boolean;
   penModeCrosshairVisible: boolean;
+  aggressivePalmRejection: boolean;
+  palmRejectionTimeout: number;
   panWithRightMouseButton: boolean; //mfuria #329
   renderImageInMarkdownReadingMode: boolean;
   renderImageInHoverPreviewForMDNotes: boolean;
@@ -611,6 +613,8 @@ export const DEFAULT_SETTINGS: ExcalidrawSettings = {
   penModeDoubleTapEraser: true,
   penModeSingleFingerPanning: true,
   penModeCrosshairVisible: true,
+  aggressivePalmRejection: false,
+  palmRejectionTimeout: 800,
   panWithRightMouseButton: false, //mfuria #329
   renderImageInMarkdownReadingMode: false,
   renderImageInHoverPreviewForMDNotes: false,
@@ -2822,6 +2826,32 @@ export class ExcalidrawSettingTab extends PluginSettingTab {
           .setValue(this.plugin.settings.penModeCrosshairVisible)
           .onChange(async (value) => {
             this.plugin.settings.penModeCrosshairVisible = value;
+            this.applySettingsUpdate();
+          }),
+      );
+
+    new Setting(detailsEl)
+      .setName(t("AGGRESSIVE_PALM_REJECTION_NAME"))
+      .setDesc(fragWithHTML(t("AGGRESSIVE_PALM_REJECTION_DESC")))
+      .addToggle((toggle) =>
+        toggle
+          .setValue(this.plugin.settings.aggressivePalmRejection)
+          .onChange(async (value) => {
+            this.plugin.settings.aggressivePalmRejection = value;
+            this.applySettingsUpdate();
+          }),
+      );
+
+    new Setting(detailsEl)
+      .setName(t("PALM_REJECTION_TIMEOUT_NAME"))
+      .setDesc(fragWithHTML(t("PALM_REJECTION_TIMEOUT_DESC")))
+      .addSlider((slider) =>
+        slider
+          .setLimits(200, 2000, 100)
+          .setValue(this.plugin.settings.palmRejectionTimeout)
+          .setDynamicTooltip()
+          .onChange(async (value) => {
+            this.plugin.settings.palmRejectionTimeout = value;
             this.applySettingsUpdate();
           }),
       );

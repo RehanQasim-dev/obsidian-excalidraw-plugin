@@ -7510,6 +7510,69 @@ export default class ExcalidrawView
       this.obsidianMenu = new ObsidianMenu(this.plugin, toolsPanelRef, this);
       this.embeddableMenu = new EmbeddableMenu(this, embeddableMenuRef);
       this.excalidrawWrapperRef = excalidrawWrapperRef;
+
+      // Aggressive Palm Rejection Listeners
+      const wrapper = excalidrawWrapperRef.current;
+      const blockedPointerIds = new Set<number>();
+      let lastPenEventTime = 0;
+
+      const handlePointerCapture = (e: PointerEvent) => {
+        if (!this.plugin.settings.aggressivePalmRejection) {
+          return;
+        }
+
+        if (e.pointerType === "pen") {
+          lastPenEventTime = Date.now();
+          return;
+        }
+
+        if (e.pointerType === "touch") {
+          const now = Date.now();
+          const timeSincePen = now - lastPenEventTime;
+          const timeout = this.plugin.settings.palmRejectionTimeout ?? 800;
+
+          let shouldBlock = blockedPointerIds.has(e.pointerId);
+
+          if (!shouldBlock) {
+            // Rule 1: Pen was active recently
+            if (timeSincePen < timeout) {
+              shouldBlock = true;
+            }
+            // Rule 2: Contact area is too large (likely palm)
+            else if ((e.width && e.width > 30) || (e.height && e.height > 30)) {
+              shouldBlock = true;
+            }
+          }
+
+          if (shouldBlock) {
+            blockedPointerIds.add(e.pointerId);
+            e.stopPropagation();
+            if (e.cancelable) {
+              e.preventDefault();
+            }
+          }
+
+          if (e.type === "pointerup" || e.type === "pointercancel") {
+            blockedPointerIds.delete(e.pointerId);
+          }
+        }
+      };
+
+      if (wrapper) {
+        wrapper.addEventListener("pointerdown", handlePointerCapture, {
+          capture: true,
+        });
+        wrapper.addEventListener("pointermove", handlePointerCapture, {
+          capture: true,
+        });
+        wrapper.addEventListener("pointerup", handlePointerCapture, {
+          capture: true,
+        });
+        wrapper.addEventListener("pointercancel", handlePointerCapture, {
+          capture: true,
+        });
+      }
+
       return () => {
         this.obsidianMenu.destroy();
         this.obsidianMenu = null;
@@ -7518,6 +7581,25 @@ export default class ExcalidrawView
         this.toolsPanelRef.current = null;
         this.embeddableMenuRef.current = null;
         this.excalidrawWrapperRef.current = null;
+
+        if (wrapper) {
+          wrapper.removeEventListener(
+            "pointerdown",
+            handlePointerCapture,
+            true,
+          );
+          wrapper.removeEventListener(
+            "pointermove",
+            handlePointerCapture,
+            true,
+          );
+          wrapper.removeEventListener("pointerup", handlePointerCapture, true);
+          wrapper.removeEventListener(
+            "pointercancel",
+            handlePointerCapture,
+            true,
+          );
+        }
       };
     }, []);
 
