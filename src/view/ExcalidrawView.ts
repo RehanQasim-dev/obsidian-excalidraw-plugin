@@ -7559,6 +7559,53 @@ export default class ExcalidrawView
         }
       };
 
+      const handleTouchCapture = (e: TouchEvent) => {
+        if (!this.plugin.settings.aggressivePalmRejection) {
+          return;
+        }
+
+        let hasStylus = false;
+        for (let i = 0; i < e.touches.length; i++) {
+          if (e.touches[i].touchType === "stylus") {
+            hasStylus = true;
+            break;
+          }
+        }
+
+        if (hasStylus) {
+          lastPenEventTime = Date.now();
+          return;
+        }
+
+        const threshold = this.plugin.settings.palmRejectionThreshold ?? 20;
+        let shouldBlock = false;
+
+        for (let i = 0; i < e.touches.length; i++) {
+          const touch = e.touches[i];
+          const rx = touch.radiusX || 0;
+          const ry = touch.radiusY || 0;
+
+          if (rx * 2 > threshold || ry * 2 > threshold) {
+            shouldBlock = true;
+            break;
+          }
+        }
+
+        const now = Date.now();
+        const timeSincePen = now - lastPenEventTime;
+        const timeout = this.plugin.settings.palmRejectionTimeout ?? 300;
+        if (timeSincePen < timeout) {
+          shouldBlock = true;
+        }
+
+        if (shouldBlock) {
+          e.stopPropagation();
+          if (e.cancelable) {
+            e.preventDefault();
+          }
+        }
+      };
+
       if (wrapper) {
         wrapper.addEventListener("pointerdown", handlePointerCapture, {
           capture: true,
@@ -7570,6 +7617,12 @@ export default class ExcalidrawView
           capture: true,
         });
         wrapper.addEventListener("pointercancel", handlePointerCapture, {
+          capture: true,
+        });
+        wrapper.addEventListener("touchstart", handleTouchCapture, {
+          capture: true,
+        });
+        wrapper.addEventListener("touchmove", handleTouchCapture, {
           capture: true,
         });
       }
@@ -7600,6 +7653,8 @@ export default class ExcalidrawView
             handlePointerCapture,
             true,
           );
+          wrapper.removeEventListener("touchstart", handleTouchCapture, true);
+          wrapper.removeEventListener("touchmove", handleTouchCapture, true);
         }
       };
     }, []);
