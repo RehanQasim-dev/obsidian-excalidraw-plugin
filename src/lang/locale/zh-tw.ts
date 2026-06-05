@@ -507,6 +507,9 @@ export default {
   PALM_REJECTION_TIMEOUT_NAME: "防誤觸逾時時間 (毫秒)",
   PALM_REJECTION_TIMEOUT_DESC:
     "在最後一次觸控筆接觸后，保持手指觸控輸入禁用的時間（以毫秒為單位）。",
+  PALM_REJECTION_THRESHOLD_NAME: "防誤觸觸摸面積閾值 (像素)",
+  PALM_REJECTION_THRESHOLD_DESC:
+    "接觸區域寬度或高度大於此閾值的手指觸控輸入將被視為手掌接觸並被屏蔽。",
   SHOW_PEN_MODE_FREEDRAW_CROSSHAIR_NAME: "在觸控筆模式下顯示十字準星（+）",
   SHOW_PEN_MODE_FREEDRAW_CROSSHAIR_DESC:
     "在觸控筆模式下使用塗鴉功能會顯示十字準星。<b>開啟：</b>顯示。<b>關閉：</b>隱藏。<br>" +

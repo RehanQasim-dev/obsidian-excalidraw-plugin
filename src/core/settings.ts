@@ -130,6 +130,7 @@ export interface ExcalidrawSettings {
   penModeCrosshairVisible: boolean;
   aggressivePalmRejection: boolean;
   palmRejectionTimeout: number;
+  palmRejectionThreshold: number;
   panWithRightMouseButton: boolean; //mfuria #329
   renderImageInMarkdownReadingMode: boolean;
   renderImageInHoverPreviewForMDNotes: boolean;
@@ -615,6 +616,7 @@ export const DEFAULT_SETTINGS: ExcalidrawSettings = {
   penModeCrosshairVisible: true,
   aggressivePalmRejection: false,
   palmRejectionTimeout: 300,
+  palmRejectionThreshold: 20,
   panWithRightMouseButton: false, //mfuria #329
   renderImageInMarkdownReadingMode: false,
   renderImageInHoverPreviewForMDNotes: false,
@@ -2847,11 +2849,25 @@ export class ExcalidrawSettingTab extends PluginSettingTab {
       .setDesc(fragWithHTML(t("PALM_REJECTION_TIMEOUT_DESC")))
       .addSlider((slider) =>
         slider
-          .setLimits(50, 500, 50)
+          .setLimits(100, 800, 1)
           .setValue(this.plugin.settings.palmRejectionTimeout)
           .setDynamicTooltip()
           .onChange(async (value) => {
             this.plugin.settings.palmRejectionTimeout = value;
+            this.applySettingsUpdate();
+          }),
+      );
+
+    new Setting(detailsEl)
+      .setName(t("PALM_REJECTION_THRESHOLD_NAME"))
+      .setDesc(fragWithHTML(t("PALM_REJECTION_THRESHOLD_DESC")))
+      .addSlider((slider) =>
+        slider
+          .setLimits(5, 50, 1)
+          .setValue(this.plugin.settings.palmRejectionThreshold)
+          .setDynamicTooltip()
+          .onChange(async (value) => {
+            this.plugin.settings.palmRejectionThreshold = value;
             this.applySettingsUpdate();
           }),
       );

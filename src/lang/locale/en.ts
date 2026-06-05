@@ -601,6 +601,9 @@ export default {
   PALM_REJECTION_TIMEOUT_NAME: "Palm rejection timeout (ms)",
   PALM_REJECTION_TIMEOUT_DESC:
     "The duration in milliseconds to keep touch input disabled after the last stylus contact.",
+  PALM_REJECTION_THRESHOLD_NAME: "Palm rejection touch size threshold (px)",
+  PALM_REJECTION_THRESHOLD_DESC:
+    "Touch inputs with contact area width or height larger than this threshold will be treated as palm contacts and blocked.",
   SHOW_PEN_MODE_FREEDRAW_CROSSHAIR_NAME: "Show (+) crosshair in pen mode",
   SHOW_PEN_MODE_FREEDRAW_CROSSHAIR_DESC:
     "Show crosshair in pen mode when using the freedraw tool. <b><u>Toggle ON:</u></b> SHOW <b><u>Toggle OFF:</u></b> HIDE<br>" +

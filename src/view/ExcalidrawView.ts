@@ -7529,7 +7529,8 @@ export default class ExcalidrawView
         if (e.pointerType === "touch") {
           const now = Date.now();
           const timeSincePen = now - lastPenEventTime;
-          const timeout = this.plugin.settings.palmRejectionTimeout ?? 800;
+          const timeout = this.plugin.settings.palmRejectionTimeout ?? 300;
+          const threshold = this.plugin.settings.palmRejectionThreshold ?? 20;
 
           let shouldBlock = blockedPointerIds.has(e.pointerId);
 
@@ -7539,7 +7540,7 @@ export default class ExcalidrawView
               shouldBlock = true;
             }
             // Rule 2: Contact area is too large (likely palm)
-            else if ((e.width && e.width > 20) || (e.height && e.height > 20)) {
+            else if ((e.width && e.width > threshold) || (e.height && e.height > threshold)) {
               shouldBlock = true;
             }
           }

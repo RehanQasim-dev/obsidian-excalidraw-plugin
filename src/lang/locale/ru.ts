@@ -500,6 +500,9 @@ export default {
   PALM_REJECTION_TIMEOUT_NAME: "Тайм-аут подавления ладони (мс)",
   PALM_REJECTION_TIMEOUT_DESC:
     "Длительность в миллисекундах, в течение которой сенсорный ввод остается отключенным после последнего контакта с пером.",
+  PALM_REJECTION_THRESHOLD_NAME: "Порог размера касания для подавления ладони (px)",
+  PALM_REJECTION_THRESHOLD_DESC:
+    "Сенсорный ввод с шириной или высотой области контакта больше этого порога будет рассматриваться как касание ладонью и блокироваться.",
   SHOW_PEN_MODE_FREEDRAW_CROSSHAIR_NAME:
     "Показать (+) перекрестие в режиме пера",
   SHOW_PEN_MODE_FREEDRAW_CROSSHAIR_DESC:
