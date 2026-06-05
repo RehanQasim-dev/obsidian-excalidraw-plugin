@@ -614,7 +614,7 @@ export const DEFAULT_SETTINGS: ExcalidrawSettings = {
   penModeSingleFingerPanning: true,
   penModeCrosshairVisible: true,
   aggressivePalmRejection: false,
-  palmRejectionTimeout: 800,
+  palmRejectionTimeout: 300,
   panWithRightMouseButton: false, //mfuria #329
   renderImageInMarkdownReadingMode: false,
   renderImageInHoverPreviewForMDNotes: false,
@@ -2847,7 +2847,7 @@ export class ExcalidrawSettingTab extends PluginSettingTab {
       .setDesc(fragWithHTML(t("PALM_REJECTION_TIMEOUT_DESC")))
       .addSlider((slider) =>
         slider
-          .setLimits(200, 2000, 100)
+          .setLimits(50, 500, 50)
           .setValue(this.plugin.settings.palmRejectionTimeout)
           .setDynamicTooltip()
           .onChange(async (value) => {

@@ -7539,7 +7539,7 @@ export default class ExcalidrawView
               shouldBlock = true;
             }
             // Rule 2: Contact area is too large (likely palm)
-            else if ((e.width && e.width > 30) || (e.height && e.height > 30)) {
+            else if ((e.width && e.width > 20) || (e.height && e.height > 20)) {
               shouldBlock = true;
             }
           }
