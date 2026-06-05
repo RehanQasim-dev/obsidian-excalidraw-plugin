@@ -131,6 +131,7 @@ export interface ExcalidrawSettings {
   aggressivePalmRejection: boolean;
   palmRejectionTimeout: number;
   palmRejectionThreshold: number;
+  samsungColors: string[];
   panWithRightMouseButton: boolean; //mfuria #329
   renderImageInMarkdownReadingMode: boolean;
   renderImageInHoverPreviewForMDNotes: boolean;
@@ -617,6 +618,7 @@ export const DEFAULT_SETTINGS: ExcalidrawSettings = {
   aggressivePalmRejection: false,
   palmRejectionTimeout: 300,
   palmRejectionThreshold: 20,
+  samsungColors: ["#000000", "#e03131", "#1971c2", "#2f9e41"],
   panWithRightMouseButton: false, //mfuria #329
   renderImageInMarkdownReadingMode: false,
   renderImageInHoverPreviewForMDNotes: false,

@@ -156,6 +156,7 @@ import {
 import { ScriptInstallPrompt } from "../shared/Dialogs/ScriptInstallPrompt";
 import { ObsidianMenu } from "./components/menu/ObsidianMenu";
 import { ToolsPanel } from "./components/menu/ToolsPanel";
+import { SamsungColorStrip } from "./components/menu/SamsungColorStrip";
 import { ScriptEngine } from "../shared/Scripts";
 import {
   getTextElementAtPointer,
@@ -398,6 +399,7 @@ export default class ExcalidrawView
   public excalidrawRoot: ReturnType<Packages["reactDOM"]["createRoot"]> | null =
     null;
   public excalidrawAPI: ExcalidrawImperativeAPI = null;
+  public setAppState: any = null;
   public excalidrawWrapperRef: React.MutableRefObject<HTMLDivElement | null> | null =
     null;
   public toolsPanelRef: React.MutableRefObject<ToolsPanel | null> | null = null;
@@ -5423,6 +5425,9 @@ export default class ExcalidrawView
     st: AppState,
     files: BinaryFileData[],
   ) {
+    if (this.setAppState) {
+      this.setAppState(st);
+    }
     if (st.activeTool?.type) {
       if (st.activeTool.type === "image") {
         if (
@@ -7496,6 +7501,9 @@ export default class ExcalidrawView
     const React = this.packages.react;
     const { Excalidraw } = this.packages.excalidrawLib;
 
+    const [appState, setAppState] = React.useState<AppState | null>(null);
+    this.setAppState = setAppState;
+
     const excalidrawWrapperRef = React.useRef<HTMLDivElement>(null);
     const toolsPanelRef = React.useRef<ToolsPanel>(null);
     const embeddableMenuRef = React.useRef<HTMLDivElement>(null);
@@ -7699,6 +7707,7 @@ export default class ExcalidrawView
       }
 
       return () => {
+        this.setAppState = null;
         this.obsidianMenu.destroy();
         this.obsidianMenu = null;
         this.embeddableMenu.destroy();
@@ -7864,6 +7873,10 @@ export default class ExcalidrawView
           this.ttdDialogTrigger(),
         ),
         this.renderToolsPanel(observer),
+        React.createElement(SamsungColorStrip, {
+          view: this,
+          appState,
+        }),
       ),
     );
   }
@@ -8028,7 +8041,11 @@ export default class ExcalidrawView
 
   public setUIMode(mode: UIMode) {
     const api = this.excalidrawAPI;
-    api.setDesktopUIMode(mode);
+    if (mode === "samsung") {
+      api.setDesktopUIMode("tray");
+    } else {
+      api.setDesktopUIMode(mode);
+    }
   }
 
   /**

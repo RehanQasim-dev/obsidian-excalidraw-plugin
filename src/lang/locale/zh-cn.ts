@@ -549,6 +549,7 @@ export default {
   MODE_FULL: "Desktop-mode",
   MODE_COMPACT: "Compact-mode",
   MODE_TRAY: "Tray-mode",
+  MODE_SAMSUNG: "Samsung-mode",
   MODE_PHONE: "Phone-mode",
   REAPPLY_UI_MODE_BUTTON: "重新应用 UI 模式",
   HOTKEY_OVERRIDE_HEAD: "热键覆盖",

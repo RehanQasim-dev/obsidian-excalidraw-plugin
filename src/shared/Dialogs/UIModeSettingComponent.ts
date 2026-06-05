@@ -4,7 +4,7 @@ import { ExcalidrawSettings } from "src/core/settings";
 import { fragWithHTML, setLeftHandedMode, setUIMode } from "src/utils/utils";
 import { DEVICE } from "src/constants/constants";
 
-export type UIMode = "full" | "compact" | "tray" | "mobile";
+export type UIMode = "full" | "compact" | "tray" | "mobile" | "samsung";
 
 //setDesktopUIMode(this.app, this.plugin.settings);
 
@@ -40,6 +40,7 @@ export class UIModeSettingsComponent {
           .addOption("full", t("MODE_FULL"))
           .addOption("compact", t("MODE_COMPACT"))
           .addOption("tray", t("MODE_TRAY"))
+          .addOption("samsung", t("MODE_SAMSUNG"))
           .setValue(this.settings.desktopUIMode)
           .onChange((value: UIMode) => {
             this.settings.desktopUIMode = value;
@@ -58,6 +59,7 @@ export class UIModeSettingsComponent {
           .addOption("full", t("MODE_FULL"))
           .addOption("compact", t("MODE_COMPACT"))
           .addOption("tray", t("MODE_TRAY"))
+          .addOption("samsung", t("MODE_SAMSUNG"))
           .setValue(this.settings.tabletUIMode)
           .onChange((value: UIMode) => {
             this.settings.tabletUIMode = value;
@@ -76,6 +78,7 @@ export class UIModeSettingsComponent {
           .addOption("full", t("MODE_FULL"))
           .addOption("compact", t("MODE_COMPACT"))
           .addOption("tray", t("MODE_TRAY"))
+          .addOption("samsung", t("MODE_SAMSUNG"))
           .addOption("mobile", t("MODE_PHONE"))
           .setValue(this.settings.phoneUIMode ?? "mobile")
           .onChange((value: UIMode) => {

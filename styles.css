@@ -989,3 +989,134 @@ Obsidian Sheets Plus support
 /*
 End Obsidian Sheets Plus support
 */
+
+/*
+Samsung Toolbar Strip Support
+*/
+.samsung-color-strip {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 48px;
+  background-color: var(--island-bg-color, var(--background-primary));
+  border: 1px solid var(--sidebar-border-color, var(--background-modifier-border));
+  border-left: none;
+  border-radius: 0 12px 12px 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 12px 0;
+  gap: 14px;
+  z-index: 999;
+}
+
+.samsung-colors-group, .samsung-bg-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+}
+
+.samsung-color-slot {
+  position: relative;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.samsung-color-dot {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 1px solid var(--background-modifier-border, rgba(0, 0, 0, 0.15));
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  outline: none;
+  box-shadow: none;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.samsung-color-dot:hover {
+  transform: scale(1.1);
+}
+
+.samsung-color-dot.active {
+  box-shadow: 0 0 0 2px var(--background-primary), 0 0 0 4px var(--color-primary);
+  transform: scale(1.15);
+}
+
+.samsung-color-dot.bg-dot {
+  border-radius: 4px;
+  width: 24px;
+  height: 24px;
+}
+
+.transparent-slash {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 140%;
+  height: 2px;
+  background-color: #ff0000;
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.samsung-divider {
+  width: 32px;
+  height: 1px;
+  background-color: var(--background-modifier-border);
+  margin: 4px 0;
+}
+
+.samsung-btn {
+  background: none;
+  border: none;
+  outline: none;
+  box-shadow: none;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  color: var(--icon-fill-color, var(--text-normal));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 38px;
+  border-radius: 6px;
+  transition: background-color 0.15s ease;
+}
+
+.samsung-btn:hover {
+  background-color: var(--background-modifier-hover);
+}
+
+.samsung-btn svg {
+  stroke: currentColor;
+  fill: none;
+}
+
+.samsung-btn-label {
+  font-size: 8px;
+  font-weight: 500;
+  margin-top: 2px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.undo-btn {
+  color: var(--text-normal);
+}
+
+/* Hide Excalidraw's default properties panel (left-side panel) when in samsung mode */
+.excalidraw-wrapper:has(.samsung-color-strip) .Island:has(.color-picker),
+.excalidraw-wrapper:has(.samsung-color-strip) .sidebar {
+  display: none !important;
+}

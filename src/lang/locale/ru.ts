@@ -490,6 +490,7 @@ export default {
   DEFAULT_PEN_MODE_NAME: "Режим пера",
   DEFAULT_PEN_MODE_DESC:
     "Должен ли режим пера автоматически включаться при открытии Excalidraw?",
+  MODE_SAMSUNG: "Режим Samsung",
   DISABLE_DOUBLE_TAP_ERASER_NAME:
     "Включение двойного нажатия ластика в режиме пера",
   AGGRESSIVE_PALM_REJECTION_NAME: "Агрессивное подавление ладони",

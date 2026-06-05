@@ -556,6 +556,7 @@ export default {
   DEFAULT_PEN_MODE_NAME: "Modo lápiz",
   DEFAULT_PEN_MODE_DESC:
     "¿Debe habilitarse automáticamente el modo lápiz al abrir Excalidraw?",
+  MODE_SAMSUNG: "Modo Samsung",
   ENABLE_DOUBLE_CLICK_TEXT_EDITING_NAME:
     "Habilitar creación de texto con doble click",
   DISABLE_DOUBLE_TAP_ERASER_NAME:

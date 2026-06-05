@@ -645,6 +645,7 @@ export default {
   MODE_FULL: "Desktop-mode",
   MODE_COMPACT: "Compact-mode",
   MODE_TRAY: "Tray-mode",
+  MODE_SAMSUNG: "Samsung-mode",
   MODE_PHONE: "Phone-mode",
   REAPPLY_UI_MODE_BUTTON: "Reapply UI mode now",
   HOTKEY_OVERRIDE_HEAD: "Hotkey overrides",
