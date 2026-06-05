@@ -572,7 +572,7 @@ export default {
     "La duración en milisegundos para mantener desactivada la entrada táctil después del último contacto con el lápiz.",
   PALM_REJECTION_THRESHOLD_NAME: "Umbral de tamaño de toque para rechazo de palma (px)",
   PALM_REJECTION_THRESHOLD_DESC:
-    "Las entradas táctiles con un ancho o alto de área de contacto superior a este umbral se tratarán como contactos de la palma y se bloquearán.",
+    "Las entradas táctiles con un ancho o alto de área de contacto superior a este umbral se tratarán como contactos de la palma y se bloquearán. Configurarlo en 0 bloquea todo desplazamiento táctil (modo solo lápiz).",
   SHOW_PEN_MODE_FREEDRAW_CROSSHAIR_NAME: "Mostrar mira (+) en modo lápiz",
   SHOW_PEN_MODE_FREEDRAW_CROSSHAIR_DESC:
     "Muestra una mira en modo lápiz al usar la herramienta de dibujo a mano alzada. <b><u>Activado:</u></b> MOSTRAR <b><u>Desactivado:</u></b> OCULTAR<br>" +

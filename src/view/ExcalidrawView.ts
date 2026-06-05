@@ -7516,35 +7516,90 @@ export default class ExcalidrawView
       const blockedPointerIds = new Set<number>();
       let lastPenEventTime = 0;
 
+      // HUD debugging element
+      let hudEl: HTMLDivElement | null = null;
+      let hudTimeout: any = null;
+      let lastTouchInfo = "";
+      let lastPointerInfo = "";
+
+      const updateHUD = () => {
+        if (!hudEl && wrapper) {
+          hudEl = wrapper.ownerDocument.createElement("div");
+          hudEl.style.position = "absolute";
+          hudEl.style.bottom = "15px";
+          hudEl.style.left = "15px";
+          hudEl.style.backgroundColor = "rgba(0, 0, 0, 0.8)";
+          hudEl.style.color = "#00ff00";
+          hudEl.style.padding = "6px 10px";
+          hudEl.style.borderRadius = "6px";
+          hudEl.style.fontFamily = "monospace";
+          hudEl.style.fontSize = "13px";
+          hudEl.style.zIndex = "999999";
+          hudEl.style.pointerEvents = "none";
+          hudEl.style.boxShadow = "0 2px 8px rgba(0, 0, 0, 0.5)";
+          wrapper.appendChild(hudEl);
+        }
+        if (hudEl) {
+          let text = "";
+          if (lastTouchInfo) text += lastTouchInfo;
+          if (lastPointerInfo) {
+            if (text) text += "\n";
+            text += lastPointerInfo;
+          }
+          hudEl.style.whiteSpace = "pre-line";
+          hudEl.textContent = text;
+        }
+        if (hudTimeout) {
+          clearTimeout(hudTimeout);
+        }
+        hudTimeout = setTimeout(() => {
+          if (hudEl && hudEl.parentNode) {
+            hudEl.parentNode.removeChild(hudEl);
+            hudEl = null;
+          }
+          lastTouchInfo = "";
+          lastPointerInfo = "";
+        }, 3000);
+      };
+
       const handlePointerCapture = (e: PointerEvent) => {
-        if (!this.plugin.settings.aggressivePalmRejection) {
-          return;
-        }
+        let isPen = e.pointerType === "pen";
+        let shouldBlock = false;
 
-        if (e.pointerType === "pen") {
-          lastPenEventTime = Date.now();
-          return;
-        }
-
-        if (e.pointerType === "touch") {
+        if (this.plugin.settings.aggressivePalmRejection && e.pointerType === "touch") {
           const now = Date.now();
           const timeSincePen = now - lastPenEventTime;
           const timeout = this.plugin.settings.palmRejectionTimeout ?? 300;
           const threshold = this.plugin.settings.palmRejectionThreshold ?? 20;
 
-          let shouldBlock = blockedPointerIds.has(e.pointerId);
+          shouldBlock = blockedPointerIds.has(e.pointerId);
 
           if (!shouldBlock) {
-            // Rule 1: Pen was active recently
             if (timeSincePen < timeout) {
               shouldBlock = true;
-            }
-            // Rule 2: Contact area is too large (likely palm)
-            else if ((e.width && e.width > threshold) || (e.height && e.height > threshold)) {
+            } else if (threshold === 0 || (e.width && e.width > threshold) || (e.height && e.height > threshold)) {
               shouldBlock = true;
             }
           }
+        }
 
+        if (e.pointerType === "touch" || e.pointerType === "pen") {
+          const w = e.width || 0;
+          const h = e.height || 0;
+          lastPointerInfo = `Pointer (${e.pointerType}): w=${w.toFixed(1)}, h=${h.toFixed(1)}${shouldBlock ? " [BLOCKED]" : ""}`;
+          updateHUD();
+        }
+
+        if (!this.plugin.settings.aggressivePalmRejection) {
+          return;
+        }
+
+        if (isPen) {
+          lastPenEventTime = Date.now();
+          return;
+        }
+
+        if (e.pointerType === "touch") {
           if (shouldBlock) {
             blockedPointerIds.add(e.pointerId);
             e.stopPropagation();
@@ -7560,42 +7615,58 @@ export default class ExcalidrawView
       };
 
       const handleTouchCapture = (e: TouchEvent) => {
-        if (!this.plugin.settings.aggressivePalmRejection) {
-          return;
-        }
-
-        let hasStylus = false;
-        for (let i = 0; i < e.touches.length; i++) {
-          if (e.touches[i].touchType === "stylus") {
-            hasStylus = true;
-            break;
-          }
-        }
-
-        if (hasStylus) {
-          lastPenEventTime = Date.now();
-          return;
-        }
-
         const threshold = this.plugin.settings.palmRejectionThreshold ?? 20;
         let shouldBlock = false;
 
+        if (this.plugin.settings.aggressivePalmRejection) {
+          let hasStylus = false;
+          for (let i = 0; i < e.touches.length; i++) {
+            if (e.touches[i].touchType === "stylus") {
+              hasStylus = true;
+              break;
+            }
+          }
+
+          if (hasStylus) {
+            lastPenEventTime = Date.now();
+          } else {
+            if (threshold === 0) {
+              shouldBlock = true;
+            } else {
+              for (let i = 0; i < e.touches.length; i++) {
+                const touch = e.touches[i];
+                const rx = touch.radiusX || 0;
+                const ry = touch.radiusY || 0;
+
+                if (rx * 2 > threshold || ry * 2 > threshold) {
+                  shouldBlock = true;
+                  break;
+                }
+              }
+            }
+
+            const now = Date.now();
+            const timeSincePen = now - lastPenEventTime;
+            const timeout = this.plugin.settings.palmRejectionTimeout ?? 300;
+            if (timeSincePen < timeout) {
+              shouldBlock = true;
+            }
+          }
+        }
+
+        let touchInfo = "";
         for (let i = 0; i < e.touches.length; i++) {
           const touch = e.touches[i];
           const rx = touch.radiusX || 0;
           const ry = touch.radiusY || 0;
-
-          if (rx * 2 > threshold || ry * 2 > threshold) {
-            shouldBlock = true;
-            break;
+          touchInfo += `Touch #${i} (${touch.touchType || "unknown"}): rx=${rx.toFixed(1)}, ry=${ry.toFixed(1)}${shouldBlock ? " [BLOCKED]" : ""}`;
+          if (i < e.touches.length - 1) {
+            touchInfo += "\n";
           }
         }
-
-        const now = Date.now();
-        const timeSincePen = now - lastPenEventTime;
-        const timeout = this.plugin.settings.palmRejectionTimeout ?? 300;
-        if (timeSincePen < timeout) {
-          shouldBlock = true;
+        if (touchInfo) {
+          lastTouchInfo = touchInfo;
+          updateHUD();
         }
 
         if (shouldBlock) {
@@ -7635,6 +7706,13 @@ export default class ExcalidrawView
         this.toolsPanelRef.current = null;
         this.embeddableMenuRef.current = null;
         this.excalidrawWrapperRef.current = null;
+
+        if (hudTimeout) {
+          clearTimeout(hudTimeout);
+        }
+        if (hudEl && hudEl.parentNode) {
+          hudEl.parentNode.removeChild(hudEl);
+        }
 
         if (wrapper) {
           wrapper.removeEventListener(

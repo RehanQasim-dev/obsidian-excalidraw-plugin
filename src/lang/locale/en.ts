@@ -603,7 +603,7 @@ export default {
     "The duration in milliseconds to keep touch input disabled after the last stylus contact.",
   PALM_REJECTION_THRESHOLD_NAME: "Palm rejection touch size threshold (px)",
   PALM_REJECTION_THRESHOLD_DESC:
-    "Touch inputs with contact area width or height larger than this threshold will be treated as palm contacts and blocked.",
+    "Touch inputs with contact area width or height larger than this threshold will be treated as palm contacts and blocked. Setting this to 0 blocks all touch panning (Stylus-Only mode).",
   SHOW_PEN_MODE_FREEDRAW_CROSSHAIR_NAME: "Show (+) crosshair in pen mode",
   SHOW_PEN_MODE_FREEDRAW_CROSSHAIR_DESC:
     "Show crosshair in pen mode when using the freedraw tool. <b><u>Toggle ON:</u></b> SHOW <b><u>Toggle OFF:</u></b> HIDE<br>" +
