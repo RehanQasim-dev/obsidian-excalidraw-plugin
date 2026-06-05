@@ -2863,7 +2863,7 @@ export class ExcalidrawSettingTab extends PluginSettingTab {
       .setDesc(fragWithHTML(t("PALM_REJECTION_THRESHOLD_DESC")))
       .addSlider((slider) =>
         slider
-          .setLimits(5, 50, 1)
+          .setLimits(0, 50, 1)
           .setValue(this.plugin.settings.palmRejectionThreshold)
           .setDynamicTooltip()
           .onChange(async (value) => {
